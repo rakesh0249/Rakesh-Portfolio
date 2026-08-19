@@ -4,8 +4,24 @@ import emailjs from "@emailjs/browser";
 import Reveal from "./Reveal";
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    from_name: "",
+    from_email: "",
+    subject: "",
+    message: "",
+  });
+
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,24 +32,34 @@ function Contact() {
     setStatus("");
 
     try {
-      const response = await emailjs.sendForm(
+      const response = await emailjs.send(
         "service_7khzvpq",
         "template_up41hpj",
-        e.currentTarget,
         {
-          publicKey: "Dd1FXs55dbK5OTH3j",
+          from_name: formData.from_name,
+          from_email: formData.from_email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        {
+          publicKey: "d1FXs55dbK5OTH3j",
         }
       );
 
-      console.log("EmailJS SUCCESS:", response.status, response.text);
+      console.log("EmailJS SUCCESS:", response);
 
-      setStatus("success");
-      e.currentTarget.reset();
+      if (response.status === 200) {
+        setStatus("success");
+
+        setFormData({
+          from_name: "",
+          from_email: "",
+          subject: "",
+          message: "",
+        });
+      }
     } catch (error) {
       console.error("EmailJS FAILED:", error);
-      console.error("Status:", error?.status);
-      console.error("Text:", error?.text);
-
       setStatus("error");
     } finally {
       setSending(false);
@@ -47,6 +73,7 @@ function Contact() {
 
           <div className="section-heading">
             <p>GET IN TOUCH</p>
+
             <h2>
               Let's <span>Connect</span>
             </h2>
@@ -55,6 +82,7 @@ function Contact() {
           <div className="contact-grid">
 
             <div className="contact-info">
+
               <h3>
                 Have a project in mind?
                 <span> Let's talk.</span>
@@ -115,6 +143,8 @@ function Contact() {
                   type="text"
                   name="from_name"
                   placeholder="Your Name"
+                  value={formData.from_name}
+                  onChange={handleChange}
                   required
                 />
 
@@ -122,6 +152,8 @@ function Contact() {
                   type="email"
                   name="from_email"
                   placeholder="Your Email"
+                  value={formData.from_email}
+                  onChange={handleChange}
                   required
                 />
 
@@ -131,6 +163,8 @@ function Contact() {
                 type="text"
                 name="subject"
                 placeholder="Subject"
+                value={formData.subject}
+                onChange={handleChange}
                 required
               />
 
@@ -138,6 +172,8 @@ function Contact() {
                 name="message"
                 rows="6"
                 placeholder="Your Message"
+                value={formData.message}
+                onChange={handleChange}
                 required
               />
 
