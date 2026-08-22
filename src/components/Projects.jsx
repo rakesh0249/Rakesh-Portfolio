@@ -46,6 +46,17 @@ function Projects() {
       live: "https://qr-code-generator-eight-ruddy.vercel.app/",
       github: "https://github.com/rakesh0249/QR-Code-Generator",
     },
+
+    {
+      title: "Crave Bites",
+      category: "Fast Food Restaurant Website",
+      image: "/projects/crave-bites.png",
+      description:
+        "A modern and responsive fast-food restaurant website featuring food menu, special offers, shopping cart, checkout, login, register and profile UI.",
+      tech: ["React", "Vite", "JavaScript", "CSS", "React Router"],
+      live: https://crave-bites-tau.vercel.app/,
+      github: "https://github.com/rakesh0249/Crave-Bites",
+    },
   ];
 
   return (
